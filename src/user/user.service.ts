@@ -2,6 +2,9 @@ import { HttpException, Injectable, Logger } from '@nestjs/common';
 import Joi from 'joi';
 import { IUserInfomation } from 'src/interface/IUserInfomation.interface';
 import { UserInfomationSchema } from 'src/schema/UserInfomation.schema';
+import * as fs from 'fs';
+import { join } from 'path';
+
 
 @Injectable()
 export class UserService {
@@ -178,8 +181,21 @@ export class UserService {
             let latestUser = allUser.length + 1
             this.userInfo[latestUser] = body
             console.log(this.userInfo)
-            console.log(this.userInfo[latestUser].educationInfo)
-            console.log(this.userInfo[latestUser].expirienceInfo)
+        } catch (err) {
+            this.logger.error(err)
+        }
+    }
+
+    async receivefile(buffer: Buffer, filename: string) {
+        try {
+            const located = join(__dirname, '../images/', filename)
+            console.log(located)
+            fs.writeFile(located, buffer, (err) => {
+                if (err) {
+                    this.logger.error(err)
+                }
+            });
+
         } catch (err) {
             this.logger.error(err)
         }

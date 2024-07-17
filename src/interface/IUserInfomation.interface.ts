@@ -17,20 +17,22 @@ export interface IUserInfomation {
     guildInfo: string[]
 }
 
-interface IContactInfo {
-    address: string,
-    subdistrict: string,
-    district: string,
-    province: string
-    postalCode: string,
-    facebook: string,
-    lineId: string,
-    instagram: string
+export interface IContactInfo {
+    address?: string,
+    subdistrict?: string,
+    district?: string,
+    province?: string
+    postalCode?: string,
+    facebook?: string,
+    lineId?: string,
+    instagram?: string
 }
 
-interface IEducationInfo { year: string, university: string }
 
-interface IExperienceInfo { fromDate: string, toDate: string, experience: string }
 
-interface ISkillInfo { skill: string, rate: number }
+export interface IEducationInfo { year: string, university: string }
+
+export interface IExperienceInfo { fromDate: string, toDate: string, experience: string }
+
+export interface ISkillInfo { skill: string, rate: number }
 
