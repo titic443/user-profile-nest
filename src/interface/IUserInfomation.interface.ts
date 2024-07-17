@@ -28,7 +28,7 @@ interface IContactInfo {
     instagram: string
 }
 
-interface IEducationInfo { year: number, university: string }
+interface IEducationInfo { year: string, university: string }
 
 interface IExperienceInfo { fromDate: string, toDate: string, experience: string }
 

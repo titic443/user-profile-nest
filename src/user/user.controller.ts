@@ -40,6 +40,7 @@ export class UserController {
 
     @Post()
     async createUser(@Req() req: Request) {
+        console.log(req.body)
         await this.userService.createUser(req.body)
     }
 
