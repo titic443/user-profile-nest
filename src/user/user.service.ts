@@ -40,8 +40,8 @@ export class UserService {
             nationality: "Thai",
             tel: "123-456-7890",
             startDate: "2023-01-01",
-            profilePic: "path/to/profilePic.jpg",
-            coverPic: "path/to/coverPic.jpg",
+            profilePic: "1_profileImage.jpeg",
+            coverPic: "1_coverImage.jpeg",
             contactInfo: {
                 address: "123 Main St",
                 subdistrict: "Downtown",
@@ -58,7 +58,7 @@ export class UserService {
                 { year: "2018", university: "Another University" },
                 { year: "2022", university: "Another University" }
             ],
-            expirienceInfo: [
+            experienceInfo: [
                 { fromDate: "2015-01-01", toDate: "2017-12-31", experience: "Software Developer" },
                 { fromDate: "2018-01-01", toDate: "2022-12-31", experience: "Senior Developer" }
             ],
@@ -96,7 +96,7 @@ export class UserService {
                 { year: "2010", university: "Some University" },
                 { year: "2014", university: "Another University" }
             ],
-            expirienceInfo: [
+            experienceInfo: [
                 { fromDate: "2015-01-01", toDate: "2017 - 12 - 31", experience: "Software Developer" },
                 { fromDate: "2018-01-01", toDate: "2022-12-31", experience: "Senior Developer" }
             ],
@@ -134,7 +134,7 @@ export class UserService {
                 { year: "2019", university: "20000" },
 
             ],
-            expirienceInfo: [
+            experienceInfo: [
                 { fromDate: "2015-01-01", toDate: "2017-12-31", experience: "Software Developer" },
                 { fromDate: "2018-01-01", toDate: "2022-12-31", experience: "Senior Developer" }
             ],
@@ -154,6 +154,16 @@ export class UserService {
             if (userDetails) {
                 return userDetails
             }
+        } catch (err) {
+            this.logger.error(err)
+        }
+    }
+
+    async downloadFile(filename: string) {
+        try {
+            const file = join('/Users/titi.cha/Code/project/user-profile-nest/dist/images/', filename)
+            const buffer = fs.readFileSync(file)
+            return buffer
         } catch (err) {
             this.logger.error(err)
         }
@@ -180,22 +190,30 @@ export class UserService {
             let allUser = Object.keys(this.userInfo)
             let latestUser = allUser.length + 1
             this.userInfo[latestUser] = body
-            console.log(this.userInfo)
+            return latestUser
         } catch (err) {
             this.logger.error(err)
         }
     }
 
-    async receivefile(buffer: Buffer, filename: string) {
+    async receivefile(buffer: Buffer, id: number, fieldname: string, filename: string) {
         try {
-            const located = join(__dirname, '../images/', filename)
-            console.log(located)
+            const findDot = filename.indexOf('.')
+            const fileType = filename.substring(findDot)
+            const newFilename = id.toString() + '_' + fieldname + fileType
+            const located = join(__dirname, '../images/', newFilename)
+
             fs.writeFile(located, buffer, (err) => {
                 if (err) {
                     this.logger.error(err)
                 }
             });
-
+            if (fieldname == 'profileImage') {
+                this.userInfo[id]['profilePic'] = newFilename
+            } else if (fieldname == 'coverImage') {
+                this.userInfo[id]['coverPic'] = newFilename
+            }
+            console.log(located)
         } catch (err) {
             this.logger.error(err)
         }
